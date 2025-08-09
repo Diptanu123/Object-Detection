@@ -1,100 +1,75 @@
-# Object Detecting Sensor with Arduino Uno
+# 🎯 Object Detecting Sensor with Arduino Uno
+
+An **Arduino-based Object Detection System** that uses an **Ultrasonic Sensor** to measure distance and trigger a **Servo Motor** when an object comes within 50 cm.  
+Perfect for automation, robotics, and smart security applications.
+
+---
 
 ## 📌 Overview
-This project is an **Object Detection System** built using:
-- Arduino Uno
-- Ultrasonic Sensor (HC-SR04)
-- Servo Motor (SG90)
-- Jumper wires & Breadboard
-
-The system **detects objects within 50 cm** using the ultrasonic sensor.  
-When an object is detected, the servo motor **rotates by 90°**, and the distance is displayed in the serial monitor.
+This project detects objects using the **HC-SR04 Ultrasonic Sensor** and measures the distance in real-time.  
+If an object comes within **50 cm**, the servo motor rotates **90°**.  
+The system is **simple, affordable, and beginner-friendly**, yet has practical applications in automation and robotics.
 
 ---
 
-## 🚀 Features
-- Detects objects within a configurable range (50 cm in this setup)
-- Rotates servo motor by 90° when an object is detected
-- Displays real-time distance measurement
-- Simple, compact, and cost-effective
+## ✨ Key Features
+- 📏 **Accurate Distance Measurement** using ultrasonic waves
+- 🔄 **Automatic Servo Rotation** when an object is detected within range
+- 🖥 **Real-time Distance Display** on Serial Monitor
+- ⚡ **Fast and Reliable** object detection
+- 🛠 **Easy to Build** with minimal components
 
 ---
 
-## 🛠 Components Required
-- **Arduino Uno** (or compatible board)
-- **Ultrasonic Sensor** (HC-SR04)
-- **Servo Motor** (SG90 or similar)
-- Breadboard
-- Jumper wires
-- USB cable for Arduino
+## 🛠 Components Used
+| Component | Quantity | Description |
+|-----------|----------|-------------|
+| Arduino Uno | 1 | Microcontroller board |
+| Ultrasonic Sensor (HC-SR04) | 1 | Measures distance using sound waves |
+| Servo Motor (SG90) | 1 | Rotates upon detection |
+| Breadboard | 1 | For easy wiring |
+| Jumper Wires | As required | For connections |
+| USB Cable | 1 | To upload code and power Arduino |
 
 ---
 
-## ⚙️ Circuit Diagram
-| Ultrasonic Sensor Pin | Arduino Pin |
-|-----------------------|-------------|
-| VCC                   | 5V          |
-| GND                   | GND         |
-| Trig                  | 9           |
-| Echo                  | 10          |
-
-| Servo Motor Pin | Arduino Pin |
-|-----------------|-------------|
-| VCC             | 5V          |
-| GND             | GND         |
-| Signal          | 6           |
+## ⚙️ How It Works
+1. The **HC-SR04 Ultrasonic Sensor** sends out ultrasonic pulses.
+2. The sensor measures the time taken for the sound wave to bounce back from an object.
+3. The Arduino calculates the **distance** using the time measurement.
+4. If the distance is **≤ 50 cm**:
+   - The **servo motor** rotates **90°**.
+   - The distance is displayed on the Serial Monitor.
+5. If the distance is **> 50 cm**, the servo returns to its initial position.
 
 ---
 
-## 📄 Working Principle
-1. **Ultrasonic Sensor** measures the distance to an object using sound waves.
-2. If the distance is **less than or equal to 50 cm**, the Arduino:
-   - Rotates the **servo motor** by 90°.
-   - Displays the distance in the serial monitor.
-3. If no object is detected within the range, the servo motor remains at its initial position.
+## 🔍 Applications
+- 🤖 **Robotics** – Autonomous obstacle avoidance
+- 🏠 **Smart Home** – Automatic door/gate opening
+- 📦 **Inventory Systems** – Detecting items on conveyor belts
+- 🚗 **Parking Assistance** – Measuring distance to obstacles
+- 🔒 **Security Systems** – Motion and presence detection
 
 ---
 
-## 📜 Arduino Code
-```cpp
-#include <Servo.h>
+## 🖥 Circuit Diagram
+*(Insert your circuit diagram image here)*
 
-Servo myservo;
+**Ultrasonic Sensor Connections**  
+| Sensor Pin | Arduino Pin |
+|------------|-------------|
+| VCC | 5V |
+| GND | GND |
+| Trig | 9 |
+| Echo | 10 |
 
-#define trigPin 9
-#define echoPin 10
-#define servoPin 6
+**Servo Motor Connections**  
+| Servo Pin | Arduino Pin |
+|-----------|-------------|
+| VCC | 5V |
+| GND | GND |
+| Signal | 6 |
 
-void setup() {
-  Serial.begin(9600);
-  myservo.attach(servoPin);
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-}
+---
 
-void loop() {
-  long duration;
-  int distance;
-
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-
-  duration = pulseIn(echoPin, HIGH);
-  distance = duration * 0.034 / 2;
-
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
-
-  if (distance <= 50) {
-    myservo.write(90);
-  } else {
-    myservo.write(0);
-  }
-
-  delay(500);
-}
